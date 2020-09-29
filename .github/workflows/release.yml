@@ -37,33 +37,15 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::$(git describe --abbrev=0 --tags)
    
-      - name: Install gh CLI	     
-        shell: bash	
-        run: |	
-          pwd	
-          wget https://github.com/cli/cli/releases/download/v0.9.0/gh_0.9.0_linux_amd64.deb	
-          ls -l	
-          sudo apt install --allow-downgrades `pwd`/gh_0.9.0_linux_amd64.deb	
-      - name: Configure gh CLI	
-        shell: bash	
-        env:	
-          ghUser: ${{ secrets.GIT_DEVOPS_USERNAME }}	
-          ghToken: ${{ secrets.GIT_DEVOPS_TOKEN }}	
-        run: |	
-          mkdir -p $HOME/.config/gh/	
-          cat <<EOF>$HOME/.config/gh/config.yml	
-          github.com:	
-            - user: $ghUser	
-              oauth_token: $ghToken	
-          EOF	
-          cat $HOME/.config/gh/config.yml	
+
+ 
       - name: Configure Git	
         shell: bash	
         env:	
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
         run: |	
-          git config --global user.email "github@heavywater.solutions"	
-          git config --global user.name "github"	
+          git config --global user.email "dangonggm@gmail.com"	
+          git config --global user.name "gong4494"	
       - name: Fetch tag and check master
         shell: bash	
         env:	
