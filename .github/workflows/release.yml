@@ -48,6 +48,8 @@ jobs:
           lerna ls --graph
           make version 
           make publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       # - name: Test
       #   shell: bash
       #   run: |
