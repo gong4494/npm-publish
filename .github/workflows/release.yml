@@ -60,4 +60,8 @@ jobs:
           lerna ls --graph
           git checkout master
           lerna version ${{ steps.get_version.outputs.VERSION }} --force-git-tag --yes
-          lerna publish --conventional-commits
+      - run: npm ci
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
