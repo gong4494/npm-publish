@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
         run: |
           git fetch --prune --unshallow --tags
-      - run: make ci
+      - run: make build
         shell: bash
       - run: make semantic-release
         shell: bash
