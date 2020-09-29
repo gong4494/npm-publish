@@ -52,15 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
         run: |
           git fetch --prune --unshallow --tags
-          
-      - name: Build Lerna bootstrap
-        shell: bash
-        run: |
-          lerna bootstrap
-          lerna ls --graph
-          git checkout master
-          lerna version ${{ steps.get_version.outputs.VERSION }} --force-git-tag --yes
-      - run: npm ci
+
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
