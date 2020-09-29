@@ -32,6 +32,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=1c1e0501-fe9f-4a7d-94db-7fd358fb1e67" >> ~/.npmrc
           cat ~/.npmrc
+          npm config set scope gong4494
       - name: NPM Build Install Lerna
         shell: bash
         run: npm install -g lerna
