@@ -35,7 +35,7 @@ jobs:
       - name: NPM Build Install Lerna
         shell: bash
         run: npm install -g lerna
-      - name: NPM Build Install TypeScript
+      - name: NPM Build Install TypeScript 
         shell: bash
         run: npm install -g typescript tsdoc
       
