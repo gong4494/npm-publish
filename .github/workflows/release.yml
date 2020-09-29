@@ -30,7 +30,7 @@ jobs:
           NING_USERNAME: ${{secrets.NING_USERNAME}}
           NING_PASSWORD: ${{secrets.NING_PASSWORD}}
         run: |
-          curl -u ${{secrets.NING_USERNAME}}:${{secrets.NING_PASSWORD}} https://heavywater.jfrog.io/artifactory/api/npm/auth > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=1c1e0501-fe9f-4a7d-94db-7fd358fb1e67" >> ~/.npmrc
           cat ~/.npmrc
       - name: NPM Build Install Lerna
         shell: bash
