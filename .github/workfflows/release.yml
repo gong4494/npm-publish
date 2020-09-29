@@ -1,0 +1,110 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+      - name: Configure NPM Registry
+        shell: bash
+        env:
+          NING_USERNAME: ${{secrets.NING_USERNAME}}
+          NING_PASSWORD: ${{secrets.NING_PASSWORD}}
+        run: |
+          curl -u ${{secrets.NING_USERNAME}}:${{secrets.NING_PASSWORD}} https://heavywater.jfrog.io/artifactory/api/npm/auth > ~/.npmrc
+          cat ~/.npmrc
+      - name: NPM Build Install Lerna
+        shell: bash
+        run: npm install -g lerna
+      - name: NPM Build Install TypeScript
+        shell: bash
+        run: npm install -g typescript tsdoc
+      
+      
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(git describe --abbrev=0 --tags)
+      - name: Install gh CLI	     
+        shell: bash	
+        run: |	
+          pwd	
+          wget https://github.com/cli/cli/releases/download/v0.9.0/gh_0.9.0_linux_amd64.deb	
+          ls -l	
+          sudo apt install --allow-downgrades `pwd`/gh_0.9.0_linux_amd64.deb	
+      - name: Configure gh CLI	
+        shell: bash	
+        env:	
+          ghUser: ${{ secrets.GIT_DEVOPS_USERNAME }}	
+          ghToken: ${{ secrets.GIT_DEVOPS_TOKEN }}	
+        run: |	
+          mkdir -p $HOME/.config/gh/	
+          cat <<EOF>$HOME/.config/gh/config.yml	
+          github.com:	
+            - user: $ghUser	
+              oauth_token: $ghToken	
+          EOF	
+          cat $HOME/.config/gh/config.yml	
+      - name: Configure Git	
+        shell: bash	
+        env:	
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
+        run: |	
+          git config --global user.email "github@heavywater.solutions"	
+          git config --global user.name "github"	
+      - name: Fetch tag and check master
+        shell: bash	
+        env:	
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
+        run: |
+          git fetch --prune --unshallow --tags
+          
+      - name: Build Lerna bootstrap
+        shell: bash
+        run: |
+          lerna bootstrap
+          lerna ls --graph
+          git checkout master
+          lerna version ${{ steps.get_version.outputs.VERSION }} --no-commit-hooks --force-git-tag --yes
+          lerna publish
+      # - name: Test
+      #   shell: bash
+      #   run: |
+      #     lerna run test
+      # - name: Increment dev Version
+      #   shell: bash
+      #   run: |
+      #     lerna run releaseDev
+      # - name: Publish API Gateway
+      #   shell: bash
+      #   run: |
+      #     cd packages/api-gateway-custom-authorizer/
+      #     npm publish
+      # - name: Publish Notify Client
+      #   shell: bash
+      #   run: |
+      #     cd packages/itops-notify/
+      #     npm publish
+      # - name: Publish HTTPS Client
+      #   shell: bash
+      #   run: |
+      #     cd packages/itops-https/
+      #     npm publish
