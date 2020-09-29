@@ -12,3 +12,15 @@ version: $(modules)
 	@for module in $(modules); do \
 		cd $$module ; npm publish --access public; cd ../; \
 	done
+
+.PHONY: semantic-release
+version: $(modules)
+	@for module in $(modules); do \
+		cd $$module ; npx semantic-release; cd ../; \
+	done	
+
+.PHONY: build
+version: $(modules)
+	@for module in $(modules); do \
+		cd $$module ; npm ci; cd ../; \
+	done

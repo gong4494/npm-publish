@@ -15,5 +15,8 @@
     "url": "https://github.com/gong4494/npm-publish/issues"
   },
   "homepage": "https://github.com/gong4494/npm-publish#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "semantic-release": "^17.1.2"
+  }
 }
