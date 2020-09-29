@@ -1,6 +1,7 @@
 {
-  "name": "@gong4494/npm-app",
+  "name": "npm-publish",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +16,7 @@
     "url": "https://github.com/gong4494/npm-publish/issues"
   },
   "homepage": "https://github.com/gong4494/npm-publish#readme",
-  "description": ""
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
 }
