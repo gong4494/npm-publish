@@ -10,5 +10,5 @@ version: $(modules)
 .PHONY: publish
 version: $(modules)
 	@for module in $(modules); do \
-		cd $$module ; npm publish; cd ../; \
+		cd $$module ; npm publish --access public; cd ../; \
 	done
