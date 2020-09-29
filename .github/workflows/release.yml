@@ -81,5 +81,5 @@ jobs:
           lerna bootstrap
           lerna ls --graph
           git checkout master
-          lerna version ${{ steps.get_version.outputs.VERSION }} --no-commit-hooks --force-git-tag --yes
-          lerna publish
+          lerna version ${{ steps.get_version.outputs.VERSION }} --force-git-tag --yes
+          lerna publish --conventional-commits
