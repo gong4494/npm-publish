@@ -4,7 +4,7 @@ version := $(shell git describe --abbrev=0 --tags)
 .PHONY: version
 version: $(modules)
 	@for module in $(modules); do \
-		cd $$module ; npm version --no-commit-hooks $(version); cd ../; \
+		cd $$module ; npm version $(version); cd ../; \
 	done
 
 .PHONY: publish
